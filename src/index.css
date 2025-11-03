@@ -8,24 +8,24 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Cerevyn Brand Colors - Dark Navy Theme */
-    --background: 228 46% 11%;
+    /* Cerevyn Brand Colors - Matching cerevyn.com */
+    --background: 225 47% 7%;
     --foreground: 0 0% 100%;
 
-    --card: 228 44% 16%;
+    --card: 225 40% 12%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 228 44% 14%;
+    --popover: 225 40% 10%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 228 100% 56%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 228 44% 23%;
+    --secondary: 225 35% 18%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 228 30% 25%;
-    --muted-foreground: 228 10% 70%;
+    --muted: 225 25% 20%;
+    --muted-foreground: 225 10% 65%;
 
     --accent: 228 100% 56%;
     --accent-foreground: 0 0% 100%;
@@ -33,28 +33,28 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 228 30% 20%;
-    --input: 228 30% 20%;
+    --border: 225 30% 18%;
+    --input: 225 30% 18%;
     --ring: 228 100% 56%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     /* Glassmorphism Effects */
-    --glass-background: 228 44% 16% / 0.6;
-    --glass-border: 228 100% 56% / 0.2;
+    --glass-background: 225 40% 12% / 0.4;
+    --glass-border: 225 30% 25% / 0.3;
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(228 100% 56%), hsl(228 80% 45%));
-    --gradient-card: linear-gradient(135deg, hsl(228 44% 16% / 0.8), hsl(228 44% 14% / 0.6));
+    --gradient-card: linear-gradient(135deg, hsl(225 40% 12% / 0.6), hsl(225 40% 10% / 0.4));
     
     /* Sidebar */
-    --sidebar-background: 228 46% 9%;
+    --sidebar-background: 225 47% 6%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 228 100% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 228 44% 18%;
+    --sidebar-accent: 225 35% 15%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 228 30% 20%;
+    --sidebar-border: 225 30% 18%;
     --sidebar-ring: 228 100% 56%;
 
     /* Chart Colors */
