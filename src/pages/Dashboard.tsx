@@ -4,12 +4,11 @@ import { Building2, Users, UserCircle, FlaskConical, Stethoscope, Handshake } fr
 import { LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 const statsData = [
-  { title: "Total Hospitals", value: "24", icon: Building2, trend: { value: "12%", isPositive: true } },
-  { title: "Departments", value: "156", icon: Stethoscope, trend: { value: "8%", isPositive: true } },
-  { title: "Doctors & Staff", value: "1,248", icon: Users, trend: { value: "15%", isPositive: true } },
-  { title: "Active Patients", value: "8,456", icon: UserCircle, trend: { value: "23%", isPositive: true } },
-  { title: "Lab Reports", value: "3,892", icon: FlaskConical, trend: { value: "5%", isPositive: false } },
-  { title: "Collaborations", value: "18", icon: Handshake, trend: { value: "6%", isPositive: true } },
+  { title: "Departments", value: "12", icon: Stethoscope, trend: { value: "8%", isPositive: true } },
+  { title: "Doctors & Staff", value: "248", icon: Users, trend: { value: "15%", isPositive: true } },
+  { title: "Active Patients", value: "1,456", icon: UserCircle, trend: { value: "23%", isPositive: true } },
+  { title: "Lab Reports", value: "892", icon: FlaskConical, trend: { value: "5%", isPositive: false } },
+  { title: "Collaborations", value: "6", icon: Handshake, trend: { value: "6%", isPositive: true } },
 ];
 
 const lineChartData = [
@@ -34,8 +33,8 @@ export default function Dashboard() {
     <div className="p-6 space-y-6 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
-        <p className="text-muted-foreground">Welcome to Cerevyn Entity Management Portal</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Hospital Dashboard</h1>
+        <p className="text-muted-foreground">Manage your hospital's departments, staff, and patients</p>
       </div>
 
       {/* Stats Cards */}
