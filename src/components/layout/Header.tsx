@@ -1,5 +1,4 @@
-import { Search, Bell, User } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Bell, User, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,20 +9,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
-  return (
-    <header className="h-16 border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-30">
-      <div className="h-full px-6 flex items-center justify-between gap-4">
-        {/* Search Bar */}
-        <div className="flex-1 max-w-md relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search patients, doctors, entities..."
-            className="pl-10 bg-background/50 border-border focus-visible:ring-primary"
-          />
-        </div>
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+  return (
+    <header className="h-16 border-b border-[#2D2755] bg-[#131e3a]/90 backdrop-blur-xl sticky top-0 z-30">
+      <div className="h-full px-6 flex items-center justify-end gap-4">
         {/* Right Section */}
         <div className="flex items-center gap-3">
           {/* Notifications */}
@@ -36,20 +35,20 @@ export const Header = () => {
                 </Badge>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80 bg-popover border-border">
-              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex flex-col items-start py-3 hover:bg-accent cursor-pointer">
-                <span className="font-medium text-sm">New patient registered</span>
-                <span className="text-xs text-muted-foreground">John Doe - 5 minutes ago</span>
+            <DropdownMenuContent align="end" className="w-80 bg-[#051650]/90 backdrop-blur-sm border-[#2D2755] text-white">
+              <DropdownMenuLabel className="text-white">Notifications</DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-[#2D2755]" />
+              <DropdownMenuItem className="flex flex-col items-start py-3 hover:bg-[#051650] cursor-pointer text-white">
+                <span className="font-medium text-sm text-white">New patient registered</span>
+                <span className="text-xs text-[#D1D5DB]">John Doe - 5 minutes ago</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex flex-col items-start py-3 hover:bg-accent cursor-pointer">
-                <span className="font-medium text-sm">Lab report ready</span>
-                <span className="text-xs text-muted-foreground">Radiology - 1 hour ago</span>
+              <DropdownMenuItem className="flex flex-col items-start py-3 hover:bg-[#051650] cursor-pointer text-white">
+                <span className="font-medium text-sm text-white">Lab report ready</span>
+                <span className="text-xs text-[#D1D5DB]">Radiology - 1 hour ago</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex flex-col items-start py-3 hover:bg-accent cursor-pointer">
-                <span className="font-medium text-sm">New collaboration request</span>
-                <span className="text-xs text-muted-foreground">City Hospital - 2 hours ago</span>
+              <DropdownMenuItem className="flex flex-col items-start py-3 hover:bg-[#051650] cursor-pointer text-white">
+                <span className="font-medium text-sm text-white">New collaboration request</span>
+                <span className="text-xs text-[#D1D5DB]">City Hospital - 2 hours ago</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -62,19 +61,23 @@ export const Header = () => {
                   <User className="h-4 w-4" />
                 </div>
                 <div className="hidden md:block text-left">
-                  <div className="text-sm font-medium">Admin User</div>
-                  <div className="text-xs text-muted-foreground">System Admin</div>
+                  <div className="text-sm font-medium text-white">{user?.name || user?.email || "User"}</div>
+                  <div className="text-xs text-[#D1D5DB]">Hospital Admin</div>
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-popover border-border">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:bg-accent cursor-pointer">Profile</DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-accent cursor-pointer">Settings</DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-accent cursor-pointer">Help & Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive hover:bg-accent cursor-pointer">
+            <DropdownMenuContent align="end" className="w-56 bg-[#051650]/90 backdrop-blur-sm border-[#2D2755] text-white">
+              <DropdownMenuLabel className="text-white">My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-[#2D2755]" />
+              <DropdownMenuItem className="hover:bg-[#051650] cursor-pointer text-white">Profile</DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-[#051650] cursor-pointer text-white">Settings</DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-[#051650] cursor-pointer text-white">Help & Support</DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-[#2D2755]" />
+              <DropdownMenuItem
+                className="text-red-400 hover:bg-[#051650] cursor-pointer"
+                onClick={handleLogout}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>
             </DropdownMenuContent>

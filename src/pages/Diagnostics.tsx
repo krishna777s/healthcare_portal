@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { FlaskConical, FileText, Calendar, TrendingUp } from "lucide-react";
 
 const diagnostics = [
@@ -13,17 +14,17 @@ const diagnostics = [
 
 export default function Diagnostics() {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white">
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Diagnostics & Labs</h1>
-        <p className="text-muted-foreground">Laboratory reports and AI-powered analysis</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Diagnostics & Labs</h1>
+        <p className="text-[#D1D5DB]">Laboratory reports and AI-powered analysis</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {diagnostics.map((lab, index) => (
           <Card 
             key={lab.id}
-            className="border-border bg-card/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 animate-slide-in"
+            className="border-[#2D2755] bg-[#051650]/10/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 animate-slide-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <CardContent className="p-6">
@@ -33,8 +34,8 @@ export default function Diagnostics() {
                     <FlaskConical className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-foreground">{lab.type}</h3>
-                    <p className="text-sm text-muted-foreground">{lab.id}</p>
+                    <h3 className="font-bold text-white">{lab.type}</h3>
+                    <p className="text-sm text-[#D1D5DB]">{lab.id}</p>
                   </div>
                 </div>
                 <Badge className={
@@ -46,22 +47,22 @@ export default function Diagnostics() {
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Patient</span>
-                  <span className="font-medium text-foreground">{lab.patient}</span>
+                  <span className="text-[#D1D5DB]">Patient</span>
+                  <span className="font-medium text-white">{lab.patient}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Doctor</span>
-                  <span className="font-medium text-foreground">{lab.doctor}</span>
+                  <span className="text-[#D1D5DB]">Doctor</span>
+                  <span className="font-medium text-white">{lab.doctor}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Date:</span>
-                  <span className="text-foreground">{lab.date}</span>
+                  <Calendar className="h-4 w-4 text-[#D1D5DB]" />
+                  <span className="text-[#D1D5DB]">Date:</span>
+                  <span className="text-white">{lab.date}</span>
                 </div>
-                <div className="flex items-center justify-between pt-2 border-t border-border">
+                <div className="flex items-center justify-between pt-2 border-t border-[#2D2755]">
                   <div className="flex items-center gap-2 text-sm">
                     <TrendingUp className="h-4 w-4 text-primary" />
-                    <span className="text-muted-foreground">AI Analysis:</span>
+                    <span className="text-[#D1D5DB]">AI Analysis:</span>
                   </div>
                   <Badge 
                     variant="outline" 
@@ -76,11 +77,11 @@ export default function Diagnostics() {
                 </div>
               </div>
 
-              <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-                <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors">
-                  <FileText className="h-4 w-4" />
+              <div className="flex gap-2 mt-4 pt-4 border-t border-[#2D2755]">
+                <Button className="flex-1 bg-primary hover:bg-primary/90 text-white">
+                  <FileText className="h-4 w-4 mr-2" />
                   View Report
-                </button>
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Search, UserCircle, Calendar, FileText } from "lucide-react";
 
 const patients = [
@@ -14,22 +15,22 @@ const patients = [
 
 export default function Patients() {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white">
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Patients</h1>
-        <p className="text-muted-foreground">Manage patient records and information</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Patients</h1>
+        <p className="text-[#D1D5DB]">Manage patient records and information</p>
       </div>
 
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search patients by name or ID..." className="pl-10 bg-background/50 border-border" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#D1D5DB]" />
+        <Input placeholder="Search patients by name or ID..." className="pl-10 bg-[#051650]/10 border-[#2D2755] text-white placeholder:text-[#9fc0d6]" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {patients.map((patient, index) => (
           <Card 
             key={patient.id}
-            className="border-border bg-card/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 animate-slide-in"
+            className="border-[#2D2755] bg-[#051650]/10/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 animate-slide-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <CardContent className="p-6">
@@ -39,8 +40,8 @@ export default function Patients() {
                     <UserCircle className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-foreground">{patient.name}</h3>
-                    <p className="text-sm text-muted-foreground">{patient.id}</p>
+                    <h3 className="font-bold text-white">{patient.name}</h3>
+                    <p className="text-sm text-[#D1D5DB]">{patient.id}</p>
                   </div>
                 </div>
                 <Badge className="bg-blue-500/20 text-blue-500">{patient.status}</Badge>
@@ -48,25 +49,25 @@ export default function Patients() {
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Attending Doctor</span>
-                  <span className="font-medium text-foreground">{patient.doctor}</span>
+                  <span className="text-[#D1D5DB]">Attending Doctor</span>
+                  <span className="font-medium text-white">{patient.doctor}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Department</span>
+                  <span className="text-[#D1D5DB]">Department</span>
                   <Badge variant="outline" className="border-primary text-primary">{patient.department}</Badge>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Last Visit:</span>
-                  <span className="text-foreground">{patient.lastVisit}</span>
+                  <Calendar className="h-4 w-4 text-[#D1D5DB]" />
+                  <span className="text-[#D1D5DB]">Last Visit:</span>
+                  <span className="text-white">{patient.lastVisit}</span>
                 </div>
               </div>
 
-              <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-                <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors">
-                  <FileText className="h-4 w-4" />
+              <div className="flex gap-2 mt-4 pt-4 border-t border-[#2D2755]">
+                <Button className="flex-1 bg-primary hover:bg-primary/90 text-white">
+                  <FileText className="h-4 w-4 mr-2" />
                   View Records
-                </button>
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -30,11 +30,11 @@ const pieChartData = [
 
 export default function Dashboard() {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Hospital Dashboard</h1>
-        <p className="text-muted-foreground">Manage your hospital's departments, staff, and patients</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Hospital Dashboard</h1>
+        <p className="text-[#D1D5DB]">Manage your hospital's departments, staff, and patients</p>
       </div>
 
       {/* Stats Cards */}
@@ -49,9 +49,9 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Line Chart */}
-        <Card className="border-border bg-card/60 backdrop-blur-sm">
+        <Card className="border-[#2D2755] bg-[#051650]/10 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-foreground">Patient & Staff Trends</CardTitle>
+            <CardTitle className="text-white">Patient & Staff Trends</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -75,9 +75,9 @@ export default function Dashboard() {
         </Card>
 
         {/* Pie Chart */}
-        <Card className="border-border bg-card/60 backdrop-blur-sm">
+        <Card className="border-[#2D2755] bg-[#051650]/10 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-foreground">Department Distribution</CardTitle>
+            <CardTitle className="text-white">Department Distribution</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -110,9 +110,9 @@ export default function Dashboard() {
       </div>
 
       {/* Area Chart */}
-      <Card className="border-border bg-card/60 backdrop-blur-sm">
+      <Card className="border-[#2D2755] bg-[#051650]/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-foreground">Monthly Activity Overview</CardTitle>
+          <CardTitle className="text-white">Monthly Activity Overview</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>

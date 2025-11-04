@@ -16,15 +16,15 @@ interface StatsCardProps {
 export const StatsCard = ({ title, value, icon: Icon, trend, className }: StatsCardProps) => {
   return (
     <Card className={cn(
-      "relative overflow-hidden border-border bg-card/60 backdrop-blur-sm",
+      "relative overflow-hidden border-[#2D2755] bg-[#051650]/10 backdrop-blur-sm",
       "hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:scale-105",
       className
     )}>
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="text-3xl font-bold text-foreground">{value}</p>
+            <p className="text-sm font-medium text-[#D1D5DB]">{title}</p>
+            <p className="text-3xl font-bold text-white">{value}</p>
             {trend && (
               <div className="flex items-center gap-1">
                 <span
@@ -35,7 +35,7 @@ export const StatsCard = ({ title, value, icon: Icon, trend, className }: StatsC
                 >
                   {trend.isPositive ? "↑" : "↓"} {trend.value}
                 </span>
-                <span className="text-xs text-muted-foreground">vs last month</span>
+                <span className="text-xs text-[#D1D5DB]">vs last month</span>
               </div>
             )}
           </div>

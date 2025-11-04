@@ -15,11 +15,11 @@ const staffMembers = [
 
 export default function Staff() {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Doctors & Staff</h1>
-          <p className="text-muted-foreground">Manage healthcare professionals directory</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Doctors & Staff</h1>
+          <p className="text-[#D1D5DB]">Manage healthcare professionals directory</p>
         </div>
         <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
           <Plus className="h-4 w-4 mr-2" />
@@ -28,7 +28,7 @@ export default function Staff() {
       </div>
 
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#D1D5DB]" />
         <Input placeholder="Search staff by name or department..." className="pl-10 bg-background/50 border-border" />
       </div>
 
@@ -36,7 +36,7 @@ export default function Staff() {
         {staffMembers.map((staff, index) => (
           <Card 
             key={staff.name}
-            className="border-border bg-card/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:scale-105 animate-slide-in"
+            className="border-[#2D2755] bg-[#051650]/10/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:scale-105 animate-slide-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <CardContent className="p-6">
@@ -45,22 +45,22 @@ export default function Staff() {
                   <User className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-foreground">{staff.name}</h3>
-                  <p className="text-sm text-muted-foreground">{staff.role}</p>
+                  <h3 className="font-bold text-white">{staff.name}</h3>
+                  <p className="text-sm text-[#D1D5DB]">{staff.role}</p>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Department</span>
+                  <span className="text-sm text-[#D1D5DB]">Department</span>
                   <Badge variant="outline" className="border-primary text-primary">{staff.department}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Experience</span>
-                  <span className="text-sm font-medium text-foreground">{staff.experience}</span>
+                  <span className="text-sm text-[#D1D5DB]">Experience</span>
+                  <span className="text-sm font-medium text-white">{staff.experience}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
+                  <span className="text-sm text-[#D1D5DB]">Status</span>
                   <Badge className="bg-green-500/20 text-green-500">{staff.status}</Badge>
                 </div>
               </div>

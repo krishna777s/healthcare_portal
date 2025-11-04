@@ -40,11 +40,11 @@ const collaborations = [
 
 export default function Collaborations() {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Collaborations & Partners</h1>
-          <p className="text-muted-foreground">Manage partnerships and collaborative projects</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Collaborations & Partners</h1>
+          <p className="text-[#D1D5DB]">Manage partnerships and collaborative projects</p>
         </div>
         <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
           <Plus className="h-4 w-4 mr-2" />
@@ -56,7 +56,7 @@ export default function Collaborations() {
         {collaborations.map((collab, index) => (
           <Card 
             key={collab.name}
-            className="border-border bg-card/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 animate-slide-in"
+            className="border-[#2D2755] bg-[#051650]/10/60 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 animate-slide-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <CardContent className="p-6">
@@ -66,36 +66,36 @@ export default function Collaborations() {
                     <Handshake className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-foreground">{collab.name}</h3>
-                    <p className="text-sm text-muted-foreground">{collab.type}</p>
+                    <h3 className="font-bold text-white">{collab.name}</h3>
+                    <p className="text-sm text-[#D1D5DB]">{collab.type}</p>
                   </div>
                 </div>
                 <Badge className="bg-green-500/20 text-green-500">{collab.status}</Badge>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4">{collab.description}</p>
+              <p className="text-sm text-[#D1D5DB] mb-4">{collab.description}</p>
 
               <div className="flex items-center gap-6 mb-4">
                 <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
-                    <span className="font-semibold text-foreground">{collab.projects}</span> Projects
+                  <FileText className="h-4 w-4 text-[#D1D5DB]" />
+                  <span className="text-sm text-[#D1D5DB]">
+                    <span className="font-semibold text-white">{collab.projects}</span> Projects
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
-                    <span className="font-semibold text-foreground">{collab.members}</span> Members
+                  <Users className="h-4 w-4 text-[#D1D5DB]" />
+                  <span className="text-sm text-[#D1D5DB]">
+                    <span className="font-semibold text-white">{collab.members}</span> Members
                   </span>
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-4 border-t border-border">
-                <Button variant="outline" size="sm" className="flex-1 border-border hover:bg-accent">
+              <div className="flex gap-2 pt-4 border-t border-[#2D2755]">
+                <Button size="sm" className="flex-1 bg-primary hover:bg-primary/90 text-white">
                   <Building2 className="h-4 w-4 mr-2" />
                   View Details
                 </Button>
-                <Button variant="outline" size="sm" className="border-border hover:bg-accent">
+                <Button size="sm" className="bg-primary hover:bg-primary/90 text-white">
                   Projects
                 </Button>
               </div>

@@ -20,15 +20,15 @@ const hospitalData = {
 
 export default function Entities() {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Hospital Information</h1>
-        <p className="text-muted-foreground">Basic details and information about your hospital</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Hospital Information</h1>
+        <p className="text-[#D1D5DB]">Basic details and information about your hospital</p>
       </div>
 
       {/* Hospital Details Card */}
-      <Card className="border-border bg-card/60 backdrop-blur-sm">
+      <Card className="border-[#2D2755] bg-[#051650]/10 backdrop-blur-sm">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
@@ -36,7 +36,7 @@ export default function Entities() {
                 <Building2 className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-2xl text-foreground mb-2">{hospitalData.name}</CardTitle>
+                <CardTitle className="text-2xl text-white mb-2">{hospitalData.name}</CardTitle>
                 <div className="flex items-center gap-3">
                   <Badge variant="outline" className="border-primary text-primary">
                     {hospitalData.registrationId}
@@ -59,34 +59,34 @@ export default function Entities() {
         <CardContent className="space-y-6">
           {/* Contact Information */}
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-3">Contact Information</h3>
+            <h3 className="text-lg font-semibold text-white mb-3">Contact Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
+                <MapPin className="h-5 w-5 text-[#D1D5DB] mt-0.5" />
                 <div>
-                  <div className="text-sm text-muted-foreground">Address</div>
-                  <div className="text-foreground">{hospitalData.address}</div>
+                  <div className="text-sm text-[#D1D5DB]">Address</div>
+                  <div className="text-white">{hospitalData.address}</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Phone className="h-5 w-5 text-muted-foreground mt-0.5" />
+                <Phone className="h-5 w-5 text-[#D1D5DB] mt-0.5" />
                 <div>
-                  <div className="text-sm text-muted-foreground">Phone</div>
-                  <div className="text-foreground">{hospitalData.contact}</div>
+                  <div className="text-sm text-[#D1D5DB]">Phone</div>
+                  <div className="text-white">{hospitalData.contact}</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Mail className="h-5 w-5 text-muted-foreground mt-0.5" />
+                <Mail className="h-5 w-5 text-[#D1D5DB] mt-0.5" />
                 <div>
-                  <div className="text-sm text-muted-foreground">Email</div>
-                  <div className="text-foreground">{hospitalData.email}</div>
+                  <div className="text-sm text-[#D1D5DB]">Email</div>
+                  <div className="text-white">{hospitalData.email}</div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
+                <Calendar className="h-5 w-5 text-[#D1D5DB] mt-0.5" />
                 <div>
-                  <div className="text-sm text-muted-foreground">Established</div>
-                  <div className="text-foreground">{hospitalData.establishedDate}</div>
+                  <div className="text-sm text-[#D1D5DB]">Established</div>
+                  <div className="text-white">{hospitalData.establishedDate}</div>
                 </div>
               </div>
             </div>
@@ -94,15 +94,15 @@ export default function Entities() {
 
           {/* Statistics */}
           <div className="pt-6 border-t border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-3">Hospital Statistics</h3>
+            <h3 className="text-lg font-semibold text-white mb-3">Hospital Statistics</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                   <Stethoscope className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-foreground">{hospitalData.departments}</div>
-                  <div className="text-sm text-muted-foreground">Departments</div>
+                  <div className="text-2xl font-bold text-white">{hospitalData.departments}</div>
+                  <div className="text-sm text-[#D1D5DB]">Departments</div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -110,8 +110,8 @@ export default function Entities() {
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-foreground">{hospitalData.staff}</div>
-                  <div className="text-sm text-muted-foreground">Doctors & Staff</div>
+                  <div className="text-2xl font-bold text-white">{hospitalData.staff}</div>
+                  <div className="text-sm text-[#D1D5DB]">Doctors & Staff</div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -119,8 +119,8 @@ export default function Entities() {
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-foreground">{hospitalData.activePatients}</div>
-                  <div className="text-sm text-muted-foreground">Active Patients</div>
+                  <div className="text-2xl font-bold text-white">{hospitalData.activePatients}</div>
+                  <div className="text-sm text-[#D1D5DB]">Active Patients</div>
                 </div>
               </div>
             </div>
@@ -128,11 +128,11 @@ export default function Entities() {
 
           {/* Actions */}
           <div className="flex gap-3 pt-4">
-            <Button variant="outline" className="border-border hover:bg-accent">
+            <Button className="bg-primary hover:bg-primary/90 text-white">
               <FileText className="h-4 w-4 mr-2" />
               View Documents
             </Button>
-            <Button variant="outline" className="border-border hover:bg-accent">
+            <Button className="bg-primary hover:bg-primary/90 text-white">
               Upload Certificate
             </Button>
           </div>
