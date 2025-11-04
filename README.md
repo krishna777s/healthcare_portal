@@ -1,4 +1,8 @@
-# Welcome to your Lovable project
+# enity-management-hospitals
+
+# Hospital Management Portal
+
+A comprehensive Entity Management Portal (EMP) for hospitals built with React, TypeScript, and Supabase.
 
 ## Project info
 
