@@ -6,19 +6,36 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+// Helper function to get display name for role
+const getRoleName = (role: string): string => {
+  switch (role) {
+    case "hospital_admin":
+      return "Hospital Admin";
+    case "doctor":
+      return "Doctor";
+    case "patient":
+      return "Patient";
+    default:
+      return "";
+  }
+};
 
 interface LoginModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSwitchToSignup: () => void;
+  role?: string;
 }
 
-export const LoginModal = ({ open, onOpenChange, onSwitchToSignup }: LoginModalProps) => {
+export const LoginModal = ({ open, onOpenChange, onSwitchToSignup, role }: LoginModalProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,10 +50,12 @@ export const LoginModal = ({ open, onOpenChange, onSwitchToSignup }: LoginModalP
       onOpenChange(false);
       setEmail("");
       setPassword("");
-    } catch (error) {
+      // Redirect to dashboard after successful login
+      navigate("/dashboard");
+    } catch (error: any) {
       toast({
         title: "Login failed",
-        description: error instanceof Error ? error.message : "Please check your credentials and try again.",
+        description: error.message || "Invalid email or password",
         variant: "destructive",
       });
     } finally {
@@ -48,9 +67,13 @@ export const LoginModal = ({ open, onOpenChange, onSwitchToSignup }: LoginModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px] bg-card border-border">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Sign In</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">
+            {role ? `${getRoleName(role)} Login` : "Sign In"}
+          </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Enter your credentials to access your hospital management portal
+            {role
+              ? `Enter your credentials to access your ${getRoleName(role).toLowerCase()} portal`
+              : "Enter your credentials to access your hospital management portal"}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">

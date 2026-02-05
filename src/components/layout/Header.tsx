@@ -16,9 +16,22 @@ export const Header = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  // Format role for display
+  const formatRole = (role?: string) => {
+    if (!role) return "User";
+    
+    const roleMap: Record<string, string> = {
+      'hospital_admin': 'Hospital Admin',
+      'doctor': 'Doctor',
+      'patient': 'Patient',
+    };
+    
+    return roleMap[role] || role.charAt(0).toUpperCase() + role.slice(1);
+  };
+
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/select-role");
   };
   return (
     <header className="h-16 border-b border-[#2D2755] bg-[#131e3a]/90 backdrop-blur-xl sticky top-0 z-30">
@@ -62,7 +75,7 @@ export const Header = () => {
                 </div>
                 <div className="hidden md:block text-left">
                   <div className="text-sm font-medium text-white">{user?.name || user?.email || "User"}</div>
-                  <div className="text-xs text-[#D1D5DB]">Hospital Admin</div>
+                  <div className="text-xs text-[#D1D5DB]">{formatRole(user?.role)}</div>
                 </div>
               </Button>
             </DropdownMenuTrigger>

@@ -1,6 +1,6 @@
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Users, UserCircle, FlaskConical, Stethoscope, Handshake } from "lucide-react";
+import { Building2, Users, UserCircle, FlaskConical, Stethoscope } from "lucide-react";
 import { LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 const statsData = [
@@ -8,7 +8,6 @@ const statsData = [
   { title: "Doctors & Staff", value: "248", icon: Users, trend: { value: "15%", isPositive: true } },
   { title: "Active Patients", value: "1,456", icon: UserCircle, trend: { value: "23%", isPositive: true } },
   { title: "Lab Reports", value: "892", icon: FlaskConical, trend: { value: "5%", isPositive: false } },
-  { title: "Collaborations", value: "6", icon: Handshake, trend: { value: "6%", isPositive: true } },
 ];
 
 const lineChartData = [
@@ -38,7 +37,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statsData.map((stat, index) => (
           <div key={stat.title} className="animate-slide-in" style={{ animationDelay: `${index * 100}ms` }}>
             <StatsCard {...stat} />

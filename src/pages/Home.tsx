@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Building2,
   Stethoscope,
@@ -16,12 +17,27 @@ import { SignupModal } from "@/components/auth/SignupModal";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [searchParams] = useSearchParams();
+  const roleParam = searchParams.get("role") || "";
+  const isSignupView = searchParams.get("signup") === "true";
+  
+  const [showLogin, setShowLogin] = useState(!isSignupView && roleParam !== "");
+  const [showSignUp, setShowSignUp] = useState(isSignupView);
   const [logoError, setLogoError] = useState(false);
 
   // header scroll state
   const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    // Update modal state when URL params change
+    if (isSignupView) {
+      setShowSignUp(true);
+      setShowLogin(false);
+    } else if (roleParam) {
+      setShowLogin(true);
+      setShowSignUp(false);
+    }
+  }, [roleParam, isSignupView]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -125,7 +141,7 @@ const Home = () => {
             </div>
             <nav className="flex items-center space-x-4">
               <button
-                onClick={() => setShowLogin(true)}
+                onClick={() => window.location.href = '/select-role'}
                 className={`px-6 py-2 rounded-2xl font-semibold backdrop-blur-sm border transition-all duration-300 ${
                   isScrolled
                     ? "bg-white/10 border-[#2D2755] text-[#131e3a]"
@@ -146,14 +162,14 @@ const Home = () => {
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
               <span className="text-white">Hospital Management</span>
               <br />
-              Made Simple
+              
             </h1>
             <p className="text-xl text-[#D1D5DB] mb-8 max-w-3xl mx-auto">
               Streamline the operations of your healthcare facility across departments, staff, and patients. Your centralized hub for hospital management, patient care, and regulatory compliance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
-                onClick={() => setShowLogin(true)}
+                onClick={() => window.location.href = '/select-role'}
                 className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg font-semibold rounded-2xl flex items-center justify-center"
               >
                 Get Started
@@ -226,7 +242,7 @@ const Home = () => {
                 Experience our platform with a 30-day free trial. No credit card required.
               </p>
               <Button
-                onClick={() => setShowSignUp(true)}
+                onClick={() => window.location.href = '/select-role'}
                 className="bg-primary hover:bg-primary/90 text-white w-full rounded-2xl"
               >
                 Start Free Trial
@@ -242,7 +258,7 @@ const Home = () => {
                 Book a personalized demo to see how our platform fits your healthcare facility.
               </p>
               <Button
-                onClick={() => setShowLogin(true)}
+                onClick={() => window.location.href = '/select-role'}
                 className="bg-primary hover:bg-primary/90 text-white w-full rounded-2xl"
               >
                 Book Demo
@@ -258,7 +274,7 @@ const Home = () => {
                 Custom solutions for large healthcare networks with complex needs.
               </p>
               <Button
-                onClick={() => setShowLogin(true)}
+                onClick={() => window.location.href = '/select-role'}
                 className="bg-primary hover:bg-primary/90 text-white w-full rounded-2xl"
               >
                 Contact Sales
@@ -374,8 +390,8 @@ const Home = () => {
       </footer>
 
       {/* Render Modals */}
-      <LoginModal open={showLogin} onOpenChange={setShowLogin} onSwitchToSignup={handleSwitchToSignUp} />
-      <SignupModal open={showSignUp} onOpenChange={setShowSignUp} onSwitchToLogin={handleSwitchToLogin} />
+      <LoginModal open={showLogin} onOpenChange={setShowLogin} onSwitchToSignup={handleSwitchToSignUp} role={roleParam} />
+      <SignupModal open={showSignUp} onOpenChange={setShowSignUp} onSwitchToLogin={handleSwitchToLogin} role={roleParam} />
     </div>
   );
 };

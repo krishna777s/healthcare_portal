@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { 
   LayoutDashboard, 
-  Building2, 
-  Stethoscope, 
-  Users, 
-  UserCircle,
-  FlaskConical,
+  Calendar,
+  FileText,
+  ClipboardList,
+  Pill,
+  User,
   Menu,
   X
 } from "lucide-react";
@@ -14,14 +14,14 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Entities", href: "/dashboard/entities", icon: Building2 },
-  { name: "Departments", href: "/dashboard/departments", icon: Stethoscope },
-  { name: "Doctors & Staff", href: "/dashboard/staff", icon: Users },
-  { name: "Patients", href: "/dashboard/patients", icon: UserCircle },
-  { name: "Diagnostics", href: "/dashboard/diagnostics", icon: FlaskConical },
+  { name: "My Appointments", href: "/dashboard/my-appointments", icon: Calendar },
+  { name: "My Reports", href: "/dashboard/my-reports", icon: FileText },
+  { name: "Medical Records", href: "/dashboard/medical-records", icon: ClipboardList },
+  { name: "Prescriptions", href: "/dashboard/prescriptions", icon: Pill },
+  { name: "My Profile", href: "/dashboard/profile", icon: User },
 ];
 
-export const Sidebar = () => {
+export const PatientSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [logoError, setLogoError] = useState(false);
 
@@ -62,7 +62,7 @@ export const Sidebar = () => {
               {isOpen && (
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-white">Cerevyn</span>
-                  <span className="text-xs text-[#D1D5DB]">EMP Portal</span>
+                  <span className="text-xs text-[#D1D5DB]">Patient Portal</span>
                 </div>
               )}
             </div>

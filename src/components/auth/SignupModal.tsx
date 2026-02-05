@@ -1,29 +1,62 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+
+// Helper function to get display name for role
+const getRoleName = (role: string): string => {
+  switch (role) {
+    case "hospital_admin":
+      return "Hospital Admin";
+    case "doctor":
+      return "Doctor";
+    case "patient":
+      return "Patient";
+    default:
+      return "";
+  }
+};
 
 interface SignupModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSwitchToLogin: () => void;
+  role?: string;
 }
 
-export const SignupModal = ({ open, onOpenChange, onSwitchToLogin }: SignupModalProps) => {
+export const SignupModal = ({ open, onOpenChange, onSwitchToLogin, role: roleProp }: SignupModalProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState(roleProp || "");
   const [isLoading, setIsLoading] = useState(false);
   const { signup } = useAuth();
   const { toast } = useToast();
 
+  // Update role when roleProp changes
+  useEffect(() => {
+    if (roleProp) {
+      setRole(roleProp);
+    }
+  }, [roleProp]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!role) {
+      toast({
+        title: "Role required",
+        description: "Please select a role to continue.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     if (password !== confirmPassword) {
       toast({
@@ -46,16 +79,17 @@ export const SignupModal = ({ open, onOpenChange, onSwitchToLogin }: SignupModal
     setIsLoading(true);
 
     try {
-      await signup(email, password, name);
+      await signup(email, password, name, role);
       toast({
-        title: "Account created!",
-        description: "Welcome to Cerevyn EMP. You have successfully signed up.",
+        title: "Verification email sent",
+        description: "Please check your email and verify your account. Once verified, you can sign in.",
       });
       onOpenChange(false);
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setRole("");
     } catch (error) {
       toast({
         title: "Signup failed",
@@ -69,11 +103,15 @@ export const SignupModal = ({ open, onOpenChange, onSwitchToLogin }: SignupModal
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-card border-border">
+      <DialogContent className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-card border-border rounded-lg p-6">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Create Account</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">
+            {roleProp ? `${getRoleName(roleProp)} Sign Up` : "Create Account"}
+          </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Sign up to start managing your hospital operations
+            {roleProp
+              ? `Create your ${getRoleName(roleProp).toLowerCase()} account to get started`
+              : "Sign up to start managing your hospital operations"}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -99,6 +137,27 @@ export const SignupModal = ({ open, onOpenChange, onSwitchToLogin }: SignupModal
               required
               className="bg-background/50 border-input"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signup-role">Role</Label>
+            {roleProp ? (
+              <Input
+                value={getRoleName(roleProp)}
+                disabled
+                className="bg-background/30 border-input cursor-not-allowed"
+              />
+            ) : (
+              <Select value={role} onValueChange={setRole}>
+                <SelectTrigger className="bg-background/50 border-input">
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="hospital_admin">Hospital Admin</SelectItem>
+                  <SelectItem value="doctor">Doctor</SelectItem>
+                  <SelectItem value="patient">Patient</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="signup-password">Password</Label>
