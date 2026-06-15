@@ -17,8 +17,14 @@ const navigation = [
 ];
 
 export const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => window.innerWidth >= 1024);
   const [logoError, setLogoError] = useState(false);
+
+  const handleLinkClick = () => {
+    if (window.innerWidth < 1024) {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <>
@@ -29,6 +35,14 @@ export const Sidebar = () => {
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
+      {/* Backdrop for mobile */}
+      {isOpen && (
+        <div
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden animate-fade-in"
+        />
+      )}
+
       <aside
         className={cn(
           "fixed left-0 top-0 h-screen bg-[#131e3a] border-r border-[#2D2755] transition-all duration-300 z-40",
@@ -37,20 +51,13 @@ export const Sidebar = () => {
         )}
       >
         <div className="flex flex-col h-full">
-          <div className="h-16 flex items-center px-6 border-b border-[#2D2755]">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold">
-                {logoError ? "C" : (
-                  <img src="/cerevyn-logo.png" alt="Cerevyn Logo" className="w-full h-full object-contain rounded-lg" onError={() => setLogoError(true)} />
-                )}
+          <div className="h-16 flex items-center pl-16 pr-6 lg:px-6 border-b border-[#2D2755]">
+            {isOpen && (
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-white">Cerevyn</span>
+                <span className="text-xs text-[#D1D5DB]">Admin Portal</span>
               </div>
-              {isOpen && (
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-white">Cerevyn</span>
-                  <span className="text-xs text-[#D1D5DB]">Admin Portal</span>
-                </div>
-              )}
-            </div>
+            )}
           </div>
 
           <nav className="flex-1 overflow-y-auto py-6">
@@ -60,6 +67,7 @@ export const Sidebar = () => {
                   <NavLink
                     to={item.href}
                     end={item.href === "/dashboard"}
+                    onClick={handleLinkClick}
                     className={({ isActive }) =>
                       cn(
                         "flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200",

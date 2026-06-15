@@ -84,9 +84,9 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#131e3a]">
+    <div className="min-h-screen bg-[#131e3a]">
       {getSidebarComponent()}
-      <div className="flex-1 lg:ml-64">
+      <div className="lg:pl-64 min-w-0">
         <Header />
         <main className="min-h-[calc(100vh-4rem)] bg-[#131e3a] text-white">
           <Routes>
