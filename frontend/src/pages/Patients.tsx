@@ -65,6 +65,8 @@ export default function Patients() {
     patient_type: "outpatient",
     current_condition: "",
     assigned_doctor_id: "",
+    ward: "",
+    bed_number: "",
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -77,6 +79,8 @@ export default function Patients() {
     current_condition: "",
     status: "under_review",
     assigned_doctor_id: "",
+    ward: "",
+    bed_number: "",
   });
 
   const [apptForm, setApptForm] = useState({
@@ -117,6 +121,8 @@ export default function Patients() {
         patient_type: formData.patient_type,
         current_condition: formData.current_condition || null,
         assigned_doctor_id: formData.assigned_doctor_id || null,
+        ward: formData.ward || null,
+        bed_number: formData.bed_number || null,
       });
       toast({
         title: "Success",
@@ -135,6 +141,8 @@ export default function Patients() {
         patient_type: "outpatient",
         current_condition: "",
         assigned_doctor_id: "",
+        ward: "",
+        bed_number: "",
       });
     } catch (err: any) {
       console.error(err);
@@ -158,6 +166,8 @@ export default function Patients() {
       current_condition: patient.current_condition || "",
       status: patient.status || "under_review",
       assigned_doctor_id: doctors.find((d: any) => d.full_name === patient.assigned_doctor_name)?.id || "",
+      ward: patient.ward || "",
+      bed_number: patient.bed_number || "",
     });
   };
 
@@ -177,6 +187,8 @@ export default function Patients() {
           current_condition: editFormData.current_condition || null,
           status: editFormData.status,
           assigned_doctor_id: editFormData.assigned_doctor_id || null,
+          ward: editFormData.ward || null,
+          bed_number: editFormData.bed_number || null,
         },
       });
       toast({
@@ -547,7 +559,7 @@ export default function Patients() {
                   <label className="text-[#D1D5DB] text-xs mb-1 block">Patient Type</label>
                   <select
                     value={formData.patient_type}
-                    onChange={(e) => setFormData({ ...formData, patient_type: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, patient_type: e.target.value, ward: e.target.value === "inpatient" ? "General Ward B" : "", bed_number: e.target.value === "inpatient" ? "B-102" : e.target.value === "icu" ? "ICU-A1" : "" })}
                     className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#4F83FF]"
                   >
                     <option value="outpatient" className="bg-[#131e3a]">Outpatient (Consultation)</option>
@@ -555,6 +567,39 @@ export default function Patients() {
                     <option value="icu" className="bg-[#131e3a]">ICU (Intensive Care)</option>
                   </select>
                 </div>
+                {formData.patient_type === "inpatient" && (
+                  <>
+                    <div>
+                      <label className="text-[#D1D5DB] text-xs mb-1 block">Ward Name</label>
+                      <input
+                        value={formData.ward}
+                        onChange={(e) => setFormData({ ...formData, ward: e.target.value })}
+                        placeholder="e.g. General Ward B"
+                        className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[#D1D5DB] text-xs mb-1 block">Bed Number</label>
+                      <input
+                        value={formData.bed_number}
+                        onChange={(e) => setFormData({ ...formData, bed_number: e.target.value })}
+                        placeholder="e.g. B-102"
+                        className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                      />
+                    </div>
+                  </>
+                )}
+                {formData.patient_type === "icu" && (
+                  <div>
+                    <label className="text-[#D1D5DB] text-xs mb-1 block">ICU Bed Number</label>
+                    <input
+                      value={formData.bed_number}
+                      onChange={(e) => setFormData({ ...formData, bed_number: e.target.value })}
+                      placeholder="e.g. ICU-A1"
+                      className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                    />
+                  </div>
+                )}
                 <div>
                   <label className="text-[#D1D5DB] text-xs mb-1 block">Current Medical Condition</label>
                   <input
@@ -673,7 +718,7 @@ export default function Patients() {
                   <label className="text-[#D1D5DB] text-xs mb-1 block">Patient Type</label>
                   <select
                     value={editFormData.patient_type}
-                    onChange={(e) => setEditFormData({ ...editFormData, patient_type: e.target.value })}
+                    onChange={(e) => setEditFormData({ ...editFormData, patient_type: e.target.value, ward: e.target.value === "inpatient" ? "General Ward B" : "", bed_number: e.target.value === "inpatient" ? "B-102" : e.target.value === "icu" ? "ICU-A1" : "" })}
                     className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#4F83FF]"
                   >
                     <option value="outpatient" className="bg-[#131e3a]">Outpatient (Consultation)</option>
@@ -681,6 +726,39 @@ export default function Patients() {
                     <option value="icu" className="bg-[#131e3a]">ICU (Intensive Care)</option>
                   </select>
                 </div>
+                {editFormData.patient_type === "inpatient" && (
+                  <>
+                    <div>
+                      <label className="text-[#D1D5DB] text-xs mb-1 block">Ward Name</label>
+                      <input
+                        value={editFormData.ward}
+                        onChange={(e) => setEditFormData({ ...editFormData, ward: e.target.value })}
+                        placeholder="e.g. General Ward B"
+                        className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[#D1D5DB] text-xs mb-1 block">Bed Number</label>
+                      <input
+                        value={editFormData.bed_number}
+                        onChange={(e) => setEditFormData({ ...editFormData, bed_number: e.target.value })}
+                        placeholder="e.g. B-102"
+                        className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                      />
+                    </div>
+                  </>
+                )}
+                {editFormData.patient_type === "icu" && (
+                  <div>
+                    <label className="text-[#D1D5DB] text-xs mb-1 block">ICU Bed Number</label>
+                    <input
+                      value={editFormData.bed_number}
+                      onChange={(e) => setEditFormData({ ...editFormData, bed_number: e.target.value })}
+                      placeholder="e.g. ICU-A1"
+                      className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                    />
+                  </div>
+                )}
                 <div>
                   <label className="text-[#D1D5DB] text-xs mb-1 block">Current Medical Condition</label>
                   <input

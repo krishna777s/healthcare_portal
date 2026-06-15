@@ -57,6 +57,10 @@ def get_doctor_stats(token: str, db: Session = Depends(get_db)):
         models.Patient.assigned_doctor_id == doctor.id,
         models.Patient.patient_type == "inpatient",
     ).count()
+    outpatients = db.query(models.Patient).filter(
+        models.Patient.assigned_doctor_id == doctor.id,
+        models.Patient.patient_type == "outpatient",
+    ).count()
 
     return schemas.DoctorStats(
         assigned_patients=assigned,
@@ -65,6 +69,7 @@ def get_doctor_stats(token: str, db: Session = Depends(get_db)):
         icu_patients=icu_count,
         unread_icu_alerts=unread_alerts,
         inpatients=inpatients,
+        outpatients=outpatients,
     )
 
 

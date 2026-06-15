@@ -207,6 +207,15 @@ def get_all_patients(token: str, db: Session = Depends(get_db)):
             if doc and doc.user:
                 assigned_doc_name = doc.user.full_name
 
+        ward = None
+        bed_number = None
+        if p.patient_type == "inpatient" and p.admission:
+            ward = p.admission.ward
+            bed_number = p.admission.bed_number
+        elif p.patient_type == "icu" and p.icu_record:
+            ward = "ICU"
+            bed_number = p.icu_record.bed_number
+
         result.append(schemas.PatientResponse(
             id=p.id,
             full_name=p.user.full_name if p.user else None,
@@ -221,6 +230,8 @@ def get_all_patients(token: str, db: Session = Depends(get_db)):
             assigned_doctor_name=assigned_doc_name,
             last_visit=last_appt.appointment_date if last_appt else None,
             next_appointment=next_appt.appointment_date if next_appt else None,
+            ward=ward,
+            bed_number=bed_number,
         ))
     return result
 
@@ -413,10 +424,35 @@ def create_patient(data: schemas.PatientCreate, token: str, db: Session = Depend
             patient_id=new_patient.id,
             doctor_id=new_patient.assigned_doctor_id,
             admission_date=date.today(),
+            ward=data.ward or "General Ward B",
+            bed_number=data.bed_number or "B-102",
             diagnosis=data.current_condition or "Admitted",
             is_active=True
         )
         db.add(admission)
+    elif new_patient.patient_type == "icu":
+        icu = models.IcuPatient(
+            patient_id=new_patient.id,
+            doctor_id=new_patient.assigned_doctor_id,
+            bed_number=data.bed_number or "ICU-A1",
+            admission_date=date.today(),
+            condition=data.current_condition or "Critical",
+            heart_rate=80.0,
+            blood_pressure="120/80",
+            oxygen_saturation=98.0,
+            temperature=37.0,
+            is_active=True
+        )
+        db.add(icu)
+        db.flush()
+        alert = models.IcuAlert(
+            icu_patient_id=icu.id,
+            alert_type="oxygen",
+            message="ICU telemetry initialized",
+            severity="low",
+            is_acknowledged=True
+        )
+        db.add(alert)
 
     db.commit()
     db.refresh(new_patient)
@@ -425,6 +461,15 @@ def create_patient(data: schemas.PatientCreate, token: str, db: Session = Depend
     if new_patient.assigned_doctor_id:
         doc = db.query(models.Doctor).filter(models.Doctor.id == new_patient.assigned_doctor_id).first()
         assigned_doc_name = doc.user.full_name if doc and doc.user else None
+
+    ward = None
+    bed_number = None
+    if new_patient.patient_type == "inpatient":
+        ward = data.ward or "General Ward B"
+        bed_number = data.bed_number or "B-102"
+    elif new_patient.patient_type == "icu":
+        ward = "ICU"
+        bed_number = data.bed_number or "ICU-A1"
 
     return schemas.PatientResponse(
         id=new_patient.id,
@@ -439,7 +484,9 @@ def create_patient(data: schemas.PatientCreate, token: str, db: Session = Depend
         status=new_patient.status,
         assigned_doctor_name=assigned_doc_name,
         last_visit=None,
-        next_appointment=None
+        next_appointment=None,
+        ward=ward,
+        bed_number=bed_number
     )
 
 
@@ -474,7 +521,7 @@ def update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db:
     if data.assigned_doctor_id is not None:
         patient.assigned_doctor_id = data.assigned_doctor_id
 
-    if patient.patient_type == "inpatient" and (old_type != "inpatient" or data.assigned_doctor_id is not None):
+    if patient.patient_type == "inpatient" and (old_type != "inpatient" or data.assigned_doctor_id is not None or data.ward is not None or data.bed_number is not None):
         admission = db.query(models.Admission).filter(
             models.Admission.patient_id == patient.id,
             models.Admission.is_active == True
@@ -484,6 +531,8 @@ def update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db:
                 patient_id=patient.id,
                 doctor_id=patient.assigned_doctor_id,
                 admission_date=date.today(),
+                ward=data.ward or "General Ward B",
+                bed_number=data.bed_number or "B-102",
                 diagnosis=patient.current_condition or "Admitted",
                 is_active=True
             )
@@ -491,6 +540,35 @@ def update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db:
         else:
             if data.assigned_doctor_id is not None:
                 admission.doctor_id = data.assigned_doctor_id
+            if data.ward is not None:
+                admission.ward = data.ward
+            if data.bed_number is not None:
+                admission.bed_number = data.bed_number
+
+    elif patient.patient_type == "icu" and (old_type != "icu" or data.assigned_doctor_id is not None or data.bed_number is not None):
+        icu = db.query(models.IcuPatient).filter(
+            models.IcuPatient.patient_id == patient.id,
+            models.IcuPatient.is_active == True
+        ).first()
+        if not icu:
+            icu = models.IcuPatient(
+                patient_id=patient.id,
+                doctor_id=patient.assigned_doctor_id,
+                bed_number=data.bed_number or "ICU-A1",
+                admission_date=date.today(),
+                condition=patient.current_condition or "Critical",
+                heart_rate=85.0,
+                blood_pressure="120/80",
+                oxygen_saturation=97.0,
+                temperature=36.8,
+                is_active=True
+            )
+            db.add(icu)
+        else:
+            if data.assigned_doctor_id is not None:
+                icu.doctor_id = data.assigned_doctor_id
+            if data.bed_number is not None:
+                icu.bed_number = data.bed_number
 
     if old_type == "inpatient" and patient.patient_type != "inpatient":
         admission = db.query(models.Admission).filter(
@@ -500,6 +578,14 @@ def update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db:
         if admission:
             admission.is_active = False
             admission.discharge_date = date.today()
+
+    if old_type == "icu" and patient.patient_type != "icu":
+        icu = db.query(models.IcuPatient).filter(
+            models.IcuPatient.patient_id == patient.id,
+            models.IcuPatient.is_active == True
+        ).first()
+        if icu:
+            icu.is_active = False
 
     db.commit()
     db.refresh(patient)
@@ -526,6 +612,15 @@ def update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db:
         .first()
     )
 
+    ward = None
+    bed_number = None
+    if patient.patient_type == "inpatient" and patient.admission:
+        ward = patient.admission.ward
+        bed_number = patient.admission.bed_number
+    elif patient.patient_type == "icu" and patient.icu_record:
+        ward = "ICU"
+        bed_number = patient.icu_record.bed_number
+
     return schemas.PatientResponse(
         id=patient.id,
         full_name=patient.user.full_name if patient.user else None,
@@ -539,7 +634,9 @@ def update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db:
         status=patient.status,
         assigned_doctor_name=assigned_doc_name,
         last_visit=last_appt.appointment_date if last_appt else None,
-        next_appointment=next_appt.appointment_date if next_appt else None
+        next_appointment=next_appt.appointment_date if next_appt else None,
+        ward=ward,
+        bed_number=bed_number
     )
 
 

@@ -131,6 +131,8 @@ class PatientCreate(BaseModel):
     patient_type: Optional[str] = "outpatient"
     current_condition: Optional[str] = None
     assigned_doctor_id: Optional[UUID] = None
+    ward: Optional[str] = None
+    bed_number: Optional[str] = None
 
 class PatientUpdate(BaseModel):
     full_name: Optional[str] = None
@@ -142,6 +144,8 @@ class PatientUpdate(BaseModel):
     current_condition: Optional[str] = None
     status: Optional[str] = None
     assigned_doctor_id: Optional[UUID] = None
+    ward: Optional[str] = None
+    bed_number: Optional[str] = None
 
 class PatientResponse(BaseModel):
     id: UUID
@@ -157,6 +161,8 @@ class PatientResponse(BaseModel):
     assigned_doctor_name: Optional[str] = None
     last_visit: Optional[date] = None
     next_appointment: Optional[date] = None
+    ward: Optional[str] = None
+    bed_number: Optional[str] = None
     model_config = {"from_attributes": True}
 
 
@@ -358,6 +364,7 @@ class DoctorStats(BaseModel):
     icu_patients: int
     unread_icu_alerts: int
     inpatients: int
+    outpatients: int
 
 
 # ─── Patient Dashboard Stats ──────────────────────────────────────────────────

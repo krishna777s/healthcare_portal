@@ -1,43 +1,59 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
-export const useDoctorStats = () =>
-  useQuery({
+export const useDoctorStats = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-stats"],
     queryFn: async () => (await api.get("/doctor/stats")).data,
     staleTime: 15_000,
     refetchInterval: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
-export const useMyPatients = () =>
-  useQuery({
+export const useMyPatients = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-my-patients"],
     queryFn: async () => (await api.get("/doctor/my-patients")).data,
     staleTime: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
-export const useInpatients = () =>
-  useQuery({
+export const useInpatients = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-inpatients"],
     queryFn: async () => (await api.get("/doctor/inpatients")).data,
     staleTime: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
-export const useIcuPatients = () =>
-  useQuery({
+export const useIcuPatients = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-icu-patients"],
     queryFn: async () => (await api.get("/doctor/icu-patients")).data,
     staleTime: 15_000,
     refetchInterval: 20_000, // auto-refresh every 20s for ICU
+    enabled: user?.role === "doctor",
   });
+};
 
-export const useIcuAlerts = () =>
-  useQuery({
+export const useIcuAlerts = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-icu-alerts"],
     queryFn: async () => (await api.get("/doctor/icu-alerts")).data,
     staleTime: 10_000,
     refetchInterval: 15_000, // auto-refresh every 15s
+    enabled: user?.role === "doctor",
   });
+};
 
 export const useAcknowledgeAlert = () => {
   const qc = useQueryClient();
@@ -51,26 +67,35 @@ export const useAcknowledgeAlert = () => {
   });
 };
 
-export const useDoctorAppointments = () =>
-  useQuery({
+export const useDoctorAppointments = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-appointments"],
     queryFn: async () => (await api.get("/doctor/appointments")).data,
     staleTime: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
-export const usePendingReports = () =>
-  useQuery({
+export const usePendingReports = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-pending-reports"],
     queryFn: async () => (await api.get("/doctor/pending-reports")).data,
     staleTime: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
-export const useDoctorPrescriptions = () =>
-  useQuery({
+export const useDoctorPrescriptions = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-prescriptions"],
     queryFn: async () => (await api.get("/doctor/prescriptions")).data,
     staleTime: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
 export const useCreatePrescription = () => {
   const qc = useQueryClient();
@@ -84,12 +109,15 @@ export const useCreatePrescription = () => {
   });
 };
 
-export const useDoctorMedicalRecords = () =>
-  useQuery({
+export const useDoctorMedicalRecords = () => {
+  const { user } = useAuth();
+  return useQuery({
     queryKey: ["doctor-medical-records"],
     queryFn: async () => (await api.get("/doctor/medical-records")).data,
     staleTime: 30_000,
+    enabled: user?.role === "doctor",
   });
+};
 
 export const useCreateMedicalRecord = () => {
   const qc = useQueryClient();

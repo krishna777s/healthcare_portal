@@ -33,7 +33,7 @@ export default function ICU() {
           <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
             <Activity className="h-8 w-8 text-red-400" /> ICU Monitor
           </h1>
-          <p className="text-[#D1D5DB]">Real-time ICU patient monitoring — auto-refreshes every 15s</p>
+          <p className="text-[#D1D5DB]">Real-time ICU patient monitoring</p>
         </div>
         {unreadCount > 0 && (
           <div className="flex items-center gap-2 px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-xl animate-pulse">
@@ -60,8 +60,8 @@ export default function ICU() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {icuPatients.map((p: any) => (
               <Card
-                key={p.id}
-                className={`border backdrop-blur-sm ${p.unread_alerts > 0 ? "border-red-500/50 bg-red-500/5" : "border-[#2D2755] bg-[#051650]/10"}`}
+                 key={p.id}
+                 className={`border backdrop-blur-sm ${p.unread_alerts > 0 ? "border-red-500/50 bg-red-500/5" : "border-[#2D2755] bg-[#051650]/10"}`}
               >
                 <CardHeader className="pb-3">
                   <CardTitle className="text-white text-base flex items-center justify-between">
@@ -122,7 +122,6 @@ export default function ICU() {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-yellow-400" /> Sensor Alert Feed
-            <span className="ml-auto text-sm font-normal text-[#D1D5DB]">Auto-refreshes every 15s</span>
           </CardTitle>
         </CardHeader>
         <CardContent>

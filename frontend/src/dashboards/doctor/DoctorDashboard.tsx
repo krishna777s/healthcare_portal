@@ -29,7 +29,7 @@ export default function DoctorDashboard() {
 
   const statsCards = stats
     ? [
-        { title: "Assigned Patients", value: String(stats.assigned_patients), icon: Users, trend: { value: "Live", isPositive: true } },
+        { title: "Outpatients", value: String(stats.outpatients), icon: Users, trend: { value: "Care", isPositive: true } },
         { title: "Today's Appointments", value: String(stats.todays_appointments), icon: Calendar, trend: { value: "Live", isPositive: true } },
         { title: "Pending Reports", value: String(stats.pending_reports), icon: FileText, trend: { value: "Live", isPositive: stats.pending_reports === 0 } },
         { title: "ICU Patients", value: String(stats.icu_patients), icon: Activity, trend: { value: String(stats.unread_icu_alerts) + " alerts", isPositive: stats.unread_icu_alerts === 0 } },

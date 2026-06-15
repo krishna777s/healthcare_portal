@@ -198,9 +198,9 @@ export default function Inpatients() {
                         <User className="h-4 w-4 text-yellow-400 flex-shrink-0" />
                         {a.patient_name}
                       </td>
-                      <td className="py-4 px-4 text-[#D1D5DB] text-sm">{a.ward || "—"}</td>
-                      <td className="py-4 px-4">
-                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-bold border border-yellow-500/30">
+                      <td className="py-4 px-4 text-[#D1D5DB] text-sm whitespace-nowrap">{a.ward || "—"}</td>
+                      <td className="py-4 px-4 whitespace-nowrap">
+                        <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-bold border border-yellow-500/30 whitespace-nowrap">
                           {a.bed_number || "—"}
                         </span>
                       </td>
