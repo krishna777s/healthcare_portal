@@ -45,6 +45,8 @@ import MyReports      from "./pages/MyReports";
 // ─── Shared ───────────────────────────────────────────────────────────────────
 import Profile  from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import PatientHistory from "./pages/PatientHistory";
+import AICopilotWidget from "./components/ai/AICopilotWidget";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,7 +54,7 @@ const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000,       // data stays fresh for 5 minutes
       gcTime: 30 * 60 * 1000,          // keep in cache for 30 minutes
       refetchOnWindowFocus: false,      // don't refetch just because window was focused
-      refetchOnMount: false,            // show cached data instantly on mount
+      refetchOnMount: true,             // refetch stale data on mount
       retry: 1,
     },
   },
@@ -72,14 +74,14 @@ const DashboardLayout = () => {
   const getSidebarComponent = () => {
     if (user?.role === "doctor")    return <DoctorSidebar />;
     if (user?.role === "patient")   return <PatientSidebar />;
-    if (user?.role === "pharmacy")  return <PharmacySidebar />;
+    if (user?.role === "pharmacy" || user?.role === "pharmacist")  return <PharmacySidebar />;
     return <Sidebar />;   // hospital_admin default
   };
 
   const getDefaultDashboard = () => {
     if (user?.role === "doctor")    return <DoctorDashboard />;
     if (user?.role === "patient")   return <PatientDashboard />;
-    if (user?.role === "pharmacy")  return <PharmacyDashboard />;
+    if (user?.role === "pharmacy" || user?.role === "pharmacist")  return <PharmacyDashboard />;
     return <Dashboard />;
   };
 
@@ -110,10 +112,10 @@ const DashboardLayout = () => {
             <Route path="/icu"          element={<RoleGuard allowedRoles={["doctor"]}><ICU /></RoleGuard>} />
 
             {/* ── Pharmacy Staff Only ───────────────────────────────── */}
-            <Route path="/pharm-orders"    element={<RoleGuard allowedRoles={["pharmacy","hospital_admin"]}><AllOrdersPage /></RoleGuard>} />
-            <Route path="/pharm-pending"   element={<RoleGuard allowedRoles={["pharmacy","hospital_admin"]}><PendingPage /></RoleGuard>} />
-            <Route path="/pharm-ready"     element={<RoleGuard allowedRoles={["pharmacy","hospital_admin"]}><ReadyPage /></RoleGuard>} />
-            <Route path="/pharm-dispensed" element={<RoleGuard allowedRoles={["pharmacy","hospital_admin"]}><DispensedPage /></RoleGuard>} />
+            <Route path="/pharm-orders"    element={<RoleGuard allowedRoles={["pharmacy","pharmacist","hospital_admin"]}><AllOrdersPage /></RoleGuard>} />
+            <Route path="/pharm-pending"   element={<RoleGuard allowedRoles={["pharmacy","pharmacist","hospital_admin"]}><PendingPage /></RoleGuard>} />
+            <Route path="/pharm-ready"     element={<RoleGuard allowedRoles={["pharmacy","pharmacist","hospital_admin"]}><ReadyPage /></RoleGuard>} />
+            <Route path="/pharm-dispensed" element={<RoleGuard allowedRoles={["pharmacy","pharmacist","hospital_admin"]}><DispensedPage /></RoleGuard>} />
 
             {/* ── Patient Only ──────────────────────────────────────── */}
             <Route path="/my-appointments" element={<RoleGuard allowedRoles={["patient"]}><MyAppointments /></RoleGuard>} />
@@ -125,10 +127,12 @@ const DashboardLayout = () => {
 
             {/* ── All Roles ─────────────────────────────────────────── */}
             <Route path="/profile" element={<Profile />} />
+            <Route path="/patient-history" element={<PatientHistory />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+        <AICopilotWidget />
       </div>
     </div>
   );

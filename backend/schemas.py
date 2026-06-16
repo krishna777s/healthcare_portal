@@ -220,7 +220,7 @@ class IcuAlertResponse(BaseModel):
     message: str
     severity: str
     is_acknowledged: bool
-    created_at: datetime
+    created_at: Optional[datetime] = None
     model_config = {"from_attributes": True}
 
 class IcuPatientResponse(BaseModel):

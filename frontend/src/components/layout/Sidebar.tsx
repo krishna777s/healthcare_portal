@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { 
   LayoutDashboard, Building2, Stethoscope, Users, UserCircle,
-  FlaskConical, ShoppingBag, Menu, X
+  FlaskConical, ShoppingBag, Menu, X, History
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ const navigation = [
   { name: "Patients", href: "/dashboard/patients", icon: UserCircle },
   { name: "Diagnostics", href: "/dashboard/diagnostics", icon: FlaskConical },
   { name: "Pharmacy", href: "/dashboard/pharmacy", icon: ShoppingBag },
+  { name: "Patient History", href: "/dashboard/patient-history", icon: History },
 ];
 
 export const Sidebar = () => {

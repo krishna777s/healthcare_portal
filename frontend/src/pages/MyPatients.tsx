@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, User, TrendingUp, AlertCircle, Plus, X, FileText, Activity, Calendar } from "lucide-react";
+import { Users, User, TrendingUp, AlertCircle, Plus, X, FileText, Activity, Calendar, History } from "lucide-react";
 import {
   useMyPatients,
   useCreatePrescription,
@@ -317,6 +318,12 @@ export default function MyPatients() {
                           >
                             <Calendar className="h-3.5 w-3.5" /> Schedule Appt
                           </button>
+                          <Link
+                            to={`/dashboard/patient-history?patientId=${p.id}`}
+                            className="flex items-center gap-1 px-2.5 py-1 text-xs bg-violet-600/20 hover:bg-violet-600/40 text-violet-300 rounded-lg transition-colors font-medium border border-violet-500/20"
+                          >
+                            <History className="h-3.5 w-3.5" /> History
+                          </Link>
                         </div>
                       </td>
                     </tr>

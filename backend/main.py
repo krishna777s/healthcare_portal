@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 from database import engine, Base
-from routers import auth_routes, admin_routes, doctor_routes, patient_routes, pharmacy_routes
+from routers import auth_routes, admin_routes, doctor_routes, patient_routes, pharmacy_routes, ai_history_routes
 from fastapi import Depends
 from sqlalchemy.orm import Session
 import database
@@ -188,6 +188,7 @@ app.include_router(admin_routes.router)
 app.include_router(doctor_routes.router)
 app.include_router(patient_routes.router)
 app.include_router(pharmacy_routes.router)
+app.include_router(ai_history_routes.router)
 
 
 @app.get("/api/clean-db")
@@ -196,7 +197,7 @@ def clean_db(db: Session = Depends(database.get_db)):
     users = db.query(models.User).filter(models.User.role.in_(["pharmacist", "pharmacy"])).all()
     for u in users:
         if u.email != "pharmacy@hospital.com":
-            staff = db.query(models.Staff).filter(models.Staff.user_id == u.id).first()
+            staff = db.query(models.Staff).filter(models.Staff.email == u.email).first()
             if staff:
                 db.delete(staff)
             db.delete(u)
@@ -206,19 +207,20 @@ def clean_db(db: Session = Depends(database.get_db)):
     if pharmacy_user:
         pharmacy_user.full_name = "Pharmacy"
         pharmacy_user.hashed_password = auth.get_password_hash("pharmacy123")
-        pharmacy_user.role = "pharmacist"
-        staff = db.query(models.Staff).filter(models.Staff.user_id == pharmacy_user.id).first()
+        pharmacy_user.role = "pharmacy"
+        staff = db.query(models.Staff).filter(models.Staff.email == pharmacy_user.email).first()
         if not staff:
-            db.add(models.Staff(user_id=pharmacy_user.id, role="pharmacist", shift="morning"))
+            db.add(models.Staff(full_name=pharmacy_user.full_name, email=pharmacy_user.email, role="pharmacist", shift="morning"))
         else:
             staff.role = "pharmacist"
+            staff.full_name = pharmacy_user.full_name
         db.commit()
     else:
-        new_user = models.User(email="pharmacy@hospital.com", hashed_password=auth.get_password_hash("pharmacy123"), full_name="Pharmacy", role="pharmacist")
+        new_user = models.User(email="pharmacy@hospital.com", hashed_password=auth.get_password_hash("pharmacy123"), full_name="Pharmacy", role="pharmacy")
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        db.add(models.Staff(user_id=new_user.id, role="pharmacist", shift="morning"))
+        db.add(models.Staff(full_name=new_user.full_name, email=new_user.email, role="pharmacist", shift="morning"))
         db.commit()
     return {"status": "cleaned"}
 

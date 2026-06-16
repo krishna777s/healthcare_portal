@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, ShoppingBag, Clock, CheckCircle,
-  Package, User, Menu, X, Bell,
+  Package, User, Menu, X, Bell, History
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ const navigation = [
   { name: "Pending",        href: "/dashboard/pharm-pending",  icon: Clock },
   { name: "Ready",          href: "/dashboard/pharm-ready",    icon: CheckCircle },
   { name: "Dispensed",      href: "/dashboard/pharm-dispensed",icon: Package },
+  { name: "Rx Patient History", href: "/dashboard/patient-history", icon: History },
   { name: "My Profile",     href: "/dashboard/profile",        icon: User },
 ];
 

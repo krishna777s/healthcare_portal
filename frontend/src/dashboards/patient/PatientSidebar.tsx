@@ -7,7 +7,8 @@ import {
   Pill,
   User,
   Menu,
-  X
+  X,
+  History
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ const navigation = [
   { name: "My Reports", href: "/dashboard/my-reports", icon: FileText },
   { name: "Medical Records", href: "/dashboard/medical-records", icon: ClipboardList },
   { name: "Prescriptions", href: "/dashboard/prescriptions", icon: Pill },
+  { name: "My Medical History", href: "/dashboard/patient-history", icon: History },
   { name: "My Profile", href: "/dashboard/profile", icon: User },
 ];
 

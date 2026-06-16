@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, Users, Calendar, FlaskConical,
-  FileText, ClipboardList, Menu, X, BedDouble, Activity, AlertTriangle,
+  FileText, ClipboardList, Menu, X, BedDouble, Activity, AlertTriangle, History
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ const navigation = [
   { name: "Diagnostics", href: "/dashboard/diagnostics", icon: FlaskConical },
   { name: "Prescriptions", href: "/dashboard/prescriptions", icon: FileText },
   { name: "Medical Records", href: "/dashboard/medical-records", icon: ClipboardList },
+  { name: "Patient History", href: "/dashboard/patient-history", icon: History },
 ];
 
 export const DoctorSidebar = () => {

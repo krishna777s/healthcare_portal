@@ -102,10 +102,7 @@ export default function Staff() {
         email: "",
         password: "",
         full_name: "",
-        role: "pharmacist",
-        department_id: "",
         phone: "",
-        shift: "morning",
       });
     } catch (err: any) {
       console.error(err);
@@ -161,7 +158,7 @@ export default function Staff() {
         <button
           onClick={() => setActiveTab("pharmacists")}
           className={`pb-3 text-lg font-semibold border-b-2 transition-all ${
-            activeTab === "staff"
+            activeTab === "pharmacists"
               ? "border-[#4F83FF] text-[#4F83FF]"
               : "border-transparent text-[#D1D5DB] hover:text-white"
           }`}

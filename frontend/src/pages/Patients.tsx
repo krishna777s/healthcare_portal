@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, User, Plus, X, Edit, CheckSquare, Square, Check, AlertCircle, Calendar } from "lucide-react";
+import { Users, User, Plus, X, Edit, CheckSquare, Square, Check, AlertCircle, Calendar, History } from "lucide-react";
 import {
   useAdminPatients,
   useAdminDoctors,
@@ -444,6 +445,13 @@ export default function Patients() {
                           >
                             <Calendar className="h-4 w-4" />
                           </button>
+                          <Link
+                            to={`/dashboard/patient-history?patientId=${p.id}`}
+                            className="inline-block p-1.5 bg-violet-600/15 hover:bg-violet-600/30 text-violet-400 rounded-lg transition-all ml-1.5 align-middle"
+                            title="View Patient History"
+                          >
+                            <History className="h-4 w-4" />
+                          </Link>
                         </td>
                       </tr>
                     );

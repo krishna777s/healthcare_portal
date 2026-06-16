@@ -11,7 +11,7 @@ router = APIRouter(prefix="/api/pharmacy", tags=["pharmacy"])
 
 def require_admin_or_pharmacy(token: str, db: Session):
     user = get_current_user_from_token(token, db)
-    if user.role not in ("hospital_admin", "pharmacy"):
+    if user.role not in ("hospital_admin", "pharmacy", "pharmacist"):
         raise HTTPException(status_code=403, detail="Admin or pharmacy access required")
     return user
 

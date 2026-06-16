@@ -32,7 +32,7 @@ def get_current_user_from_token(token: str, db: Session) -> models.User:
 
 @router.post("/signup", response_model=schemas.UserResponse)
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    if user.role in ("doctor", "patient", "hospital_admin", "pharmacy"):
+    if user.role in ("doctor", "patient", "hospital_admin", "pharmacy", "pharmacist"):
         raise HTTPException(
             status_code=400,
             detail="Registration is disabled for this role. Account credentials must be provisioned by the Administrator."
