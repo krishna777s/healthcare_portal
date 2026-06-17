@@ -146,6 +146,12 @@ def get_inpatients(token: str, db: Session = Depends(get_db)):
             diagnosis=a.diagnosis,
             days_admitted=days,
             is_active=a.is_active,
+            gender=a.patient.gender if a.patient else None,
+            blood_group=a.patient.blood_group if a.patient else None,
+            phone=a.patient.phone if a.patient else None,
+            date_of_birth=a.patient.date_of_birth if a.patient else None,
+            current_condition=a.patient.current_condition if a.patient else None,
+            status=a.patient.status if a.patient else None,
         ))
     return result
 
@@ -170,6 +176,7 @@ def get_icu_patients(token: str, db: Session = Depends(get_db)):
         ).count()
         result.append(schemas.IcuPatientResponse(
             id=ip.id,
+            patient_id=ip.patient_id,
             patient_name=patient_name,
             doctor_name=ip.doctor.user.full_name if ip.doctor and ip.doctor.user else None,
             bed_number=ip.bed_number,
@@ -180,6 +187,11 @@ def get_icu_patients(token: str, db: Session = Depends(get_db)):
             oxygen_saturation=ip.oxygen_saturation,
             temperature=ip.temperature,
             unread_alerts=unread,
+            gender=ip.patient.gender if ip.patient else None,
+            blood_group=ip.patient.blood_group if ip.patient else None,
+            phone=ip.patient.phone if ip.patient else None,
+            date_of_birth=ip.patient.date_of_birth if ip.patient else None,
+            status=ip.patient.status if ip.patient else None,
         ))
     return result
 

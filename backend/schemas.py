@@ -238,6 +238,7 @@ class IcuAlertResponse(BaseModel):
 
 class IcuPatientResponse(BaseModel):
     id: UUID
+    patient_id: Optional[UUID] = None
     patient_name: Optional[str] = None
     doctor_name: Optional[str] = None
     bed_number: str
@@ -248,6 +249,11 @@ class IcuPatientResponse(BaseModel):
     oxygen_saturation: Optional[float] = None
     temperature: Optional[float] = None
     unread_alerts: Optional[int] = 0
+    gender: Optional[str] = None
+    blood_group: Optional[str] = None
+    phone: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    status: Optional[str] = None
     model_config = {"from_attributes": True}
 
 

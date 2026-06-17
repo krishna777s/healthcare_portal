@@ -182,3 +182,17 @@ export const useUploadPrescriptionFile = () => {
   });
 };
 
+export const useDoctorUpdatePatient = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ patientId, data }: { patientId: string; data: any }) =>
+      (await api.put(`/doctor/patients/${patientId}`, data)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["doctor-my-patients"] });
+      qc.invalidateQueries({ queryKey: ["doctor-inpatients"] });
+      qc.invalidateQueries({ queryKey: ["doctor-icu-patients"] });
+      qc.invalidateQueries({ queryKey: ["doctor-stats"] });
+    },
+  });
+};
+
