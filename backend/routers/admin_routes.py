@@ -120,6 +120,44 @@ def create_department(data: schemas.DepartmentCreate, token: str, db: Session = 
     )
 
 
+@router.put("/departments/{department_id}", response_model=schemas.DepartmentResponse)
+def update_department(department_id: str, data: schemas.DepartmentUpdate, token: str, db: Session = Depends(get_db)):
+    require_admin(token, db)
+
+    dept = db.query(models.Department).filter(models.Department.id == department_id).first()
+    if not dept:
+        raise HTTPException(status_code=404, detail="Department not found")
+
+    if data.name is not None:
+        existing = db.query(models.Department).filter(models.Department.name == data.name, models.Department.id != dept.id).first()
+        if existing:
+            raise HTTPException(status_code=400, detail="Another department with this name already exists")
+        dept.name = data.name
+
+    if data.description is not None:
+        dept.description = data.description
+
+    if data.head_doctor is not None:
+        dept.head_doctor = data.head_doctor
+
+    if data.total_beds is not None:
+        dept.total_beds = data.total_beds
+
+    db.commit()
+    db.refresh(dept)
+
+    doctor_count = db.query(models.Doctor).filter(models.Doctor.department_id == dept.id).count()
+
+    return schemas.DepartmentResponse(
+        id=dept.id,
+        name=dept.name,
+        description=dept.description,
+        head_doctor=dept.head_doctor,
+        total_beds=dept.total_beds,
+        doctor_count=doctor_count
+    )
+
+
 # ─── Staff (Doctors + Non-Doctor Staff) ──────────────────────────────────────
 
 @router.get("/staff", response_model=List[schemas.StaffResponse])

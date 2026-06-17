@@ -621,39 +621,39 @@ export default function PatientHistory() {
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead className="sticky top-0 z-20 bg-[#0c132f]">
               <tr className="border-b border-[#2D2755]">
-                <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB]">Patient Name</th>
-                <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB]">Phone</th>
-                <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB]">Blood Group</th>
-                <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB]">Patient Type</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0]">Patient Name</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0]">Phone</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0] text-center">Blood Group</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0] text-center">Patient Type</th>
                 {user?.role === "hospital_admin" && (
-                  <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB]">Consulting Doctor</th>
+                  <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0]">Consulting Doctor</th>
                 )}
-                <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB]">Current Condition</th>
-                <th className="py-4 px-6 text-sm font-semibold text-[#D1D5DB] text-center">Actions</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0]">Current Condition</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider text-[#A0AEC0] text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedPatients.map(p => (
                 <tr key={p.id} className="border-b border-[#2D2755]/50 hover:bg-[#051650]/20 transition-colors">
-                  <td className="py-4 px-6 text-white font-semibold">
+                  <td className="py-3.5 px-4 text-white font-semibold">
                     <div className="flex items-center gap-2">
                       <div className="h-8 w-8 rounded-full bg-indigo-600/20 text-indigo-300 flex items-center justify-center font-bold text-xs flex-shrink-0">
                         {p.full_name ? p.full_name[0].toUpperCase() : "P"}
                       </div>
                       <div>
-                        <p className="leading-tight">{p.full_name}</p>
+                        <p className="leading-tight text-sm">{p.full_name}</p>
                         {p.email && <p className="text-[10px] text-slate-400 font-normal">{p.email}</p>}
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-slate-300 text-sm whitespace-nowrap">{p.phone || "—"}</td>
-                  <td className="py-4 px-6 text-sm">
+                  <td className="py-3.5 px-4 text-slate-300 text-xs whitespace-nowrap">{p.phone || "—"}</td>
+                  <td className="py-3.5 px-4 text-center text-xs">
                     {p.blood_group
                       ? <span className="px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/20 text-xs font-bold tracking-wide">{p.blood_group}</span>
                       : <span className="text-slate-500">—</span>
                     }
                   </td>
-                  <td className="py-4 px-6 text-sm">
+                  <td className="py-3.5 px-4 text-center text-xs">
                     <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase border ${
                       p.patient_type === "icu" ? "bg-red-500/10 text-red-400 border-red-500/20" :
                       p.patient_type === "inpatient" ? "bg-rose-500/10 text-rose-400 border-rose-500/20" :
@@ -663,16 +663,20 @@ export default function PatientHistory() {
                     </span>
                   </td>
                   {user?.role === "hospital_admin" && (
-                    <td className="py-4 px-6 text-slate-300 text-sm whitespace-nowrap">{p.doctor_name || "—"}</td>
+                    <td className="py-3.5 px-4 text-slate-300 text-xs whitespace-nowrap">{p.doctor_name || "—"}</td>
                   )}
-                  <td className="py-4 px-6 text-slate-300 text-sm">{p.current_condition || "—"}</td>
-                  <td className="py-4 px-6 text-center">
+                  <td className="py-3.5 px-4 text-slate-300 text-xs">
+                    <div className="truncate max-w-[180px]" title={p.current_condition || ""}>
+                      {p.current_condition || "—"}
+                    </div>
+                  </td>
+                  <td className="py-3.5 px-4 text-center">
                     <button
                       onClick={() => {
                         setSelectedPatientId(p.id);
                         setIsModalOpen(true);
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-all shadow-md shadow-indigo-600/10"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-all shadow-md shadow-indigo-600/10"
                     >
                       <Clock className="h-3.5 w-3.5" /> Show History
                     </button>

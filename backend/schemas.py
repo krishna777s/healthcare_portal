@@ -69,6 +69,13 @@ class DepartmentResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class DepartmentUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    head_doctor: Optional[str] = None
+    total_beds: Optional[int] = None
+
+
 # ─── Staff ────────────────────────────────────────────────────────────────────
 
 class StaffResponse(BaseModel):
@@ -206,6 +213,12 @@ class AdmissionResponse(BaseModel):
     diagnosis: Optional[str] = None
     days_admitted: Optional[int] = None
     is_active: bool
+    gender: Optional[str] = None
+    blood_group: Optional[str] = None
+    phone: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    current_condition: Optional[str] = None
+    status: Optional[str] = None
     model_config = {"from_attributes": True}
 
 

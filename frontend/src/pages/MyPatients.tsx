@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, User, TrendingUp, AlertCircle, Plus, X, FileText, Activity, Calendar, History } from "lucide-react";
+import { Users, User, TrendingUp, AlertCircle, Plus, X, FileText, Activity, Calendar, History, Edit } from "lucide-react";
 import {
   useMyPatients,
   useCreatePrescription,
@@ -11,6 +11,7 @@ import {
   useUploadLabReportFile,
   useCreateAppointment,
   useUploadPrescriptionFile,
+  useDoctorUpdatePatient,
 } from "@/hooks/useDoctorData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -38,6 +39,18 @@ export default function MyPatients() {
   const [labModal, setLabModal] = useState<{ open: boolean; patientId: string; patientName: string } | null>(null);
   const [apptModal, setApptModal] = useState<{ open: boolean; patientId: string; patientName: string } | null>(null);
   const [prescFile, setPrescFile] = useState<File | null>(null);
+
+  // Edit Patient Details Modal State
+  const [editModal, setEditModal] = useState<{ open: boolean; patient: any } | null>(null);
+  const [editForm, setEditForm] = useState({
+    current_condition: "",
+    status: "stable",
+    gender: "male",
+    blood_group: "",
+    phone: "",
+    date_of_birth: "",
+  });
+  const updatePatient = useDoctorUpdatePatient();
 
   // Form States - Appointment
   const [apptForm, setApptForm] = useState({
@@ -232,6 +245,29 @@ export default function MyPatients() {
     }
   };
 
+  const handleUpdatePatient = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editModal) return;
+    try {
+      await updatePatient.mutateAsync({
+        patientId: editModal.patient.id,
+        data: editForm,
+      });
+      toast({
+        title: "Success",
+        description: "Patient Details Updated Successfully!",
+      });
+      setEditModal(null);
+    } catch (err: any) {
+      console.error(err);
+      toast({
+        title: "Error",
+        description: err.response?.data?.detail || "Failed to update patient details",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="p-6 space-y-6 animate-fade-in bg-[#131e3a] text-white min-h-screen">
       <div>
@@ -317,6 +353,23 @@ export default function MyPatients() {
                             className="flex items-center gap-1 px-2.5 py-1 text-xs bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 rounded-lg transition-colors font-medium border border-indigo-500/20"
                           >
                             <Calendar className="h-3.5 w-3.5" /> Schedule Appt
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditModal({ open: true, patient: p });
+                              setEditForm({
+                                current_condition: p.current_condition || "",
+                                status: p.status || "stable",
+                                gender: p.gender || "male",
+                                blood_group: p.blood_group || "",
+                                phone: p.phone || "",
+                                date_of_birth: p.date_of_birth || "",
+                              });
+                            }}
+                            className="flex items-center gap-1 px-2.5 py-1 text-xs bg-violet-600/20 hover:bg-violet-600/40 text-violet-300 rounded-lg transition-colors font-medium border border-violet-500/20"
+                            title="Edit Patient Details"
+                          >
+                            <Edit className="h-3.5 w-3.5" /> Edit
                           </button>
                           <Link
                             to={`/dashboard/patient-history?patientId=${p.id}`}
@@ -629,6 +682,101 @@ export default function MyPatients() {
                   {createAppointment.isPending ? "Scheduling..." : "Schedule Appointment"}
                 </button>
                 <button type="button" onClick={() => setApptModal(null)} className="px-6 py-2.5 bg-[#051650]/30 text-[#D1D5DB] rounded-xl hover:bg-[#051650]/50 border border-[#2D2755] transition-all">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Patient Modal */}
+      {editModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-[#131e3a] border border-[#2D2755] rounded-2xl w-full max-w-lg shadow-2xl animate-slide-in">
+            <div className="flex items-center justify-between p-6 border-b border-[#2D2755]">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Edit className="h-5 w-5 text-indigo-400" /> Edit Details — {editModal.patient.full_name}
+              </h2>
+              <button onClick={() => setEditModal(null)} className="text-[#D1D5DB] hover:text-white p-1 hover:bg-[#051650]/40 rounded-lg">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <form onSubmit={handleUpdatePatient} className="p-6 space-y-4">
+              <div>
+                <label className="text-[#D1D5DB] text-xs mb-1 block">Current Condition</label>
+                <input
+                  value={editForm.current_condition}
+                  onChange={(e) => setEditForm({ ...editForm, current_condition: e.target.value })}
+                  placeholder="e.g. Type 2 Diabetes"
+                  className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[#D1D5DB] text-xs mb-1 block">Patient Status</label>
+                  <select
+                    value={editForm.status}
+                    onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                    className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#4F83FF] text-sm"
+                  >
+                    <option value="stable" className="bg-[#131e3a]">Stable</option>
+                    <option value="improving" className="bg-[#131e3a]">Improving</option>
+                    <option value="under_review" className="bg-[#131e3a]">Under Review</option>
+                    <option value="critical" className="bg-[#131e3a]">Critical</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[#D1D5DB] text-xs mb-1 block">Blood Group</label>
+                  <input
+                    value={editForm.blood_group}
+                    onChange={(e) => setEditForm({ ...editForm, blood_group: e.target.value })}
+                    placeholder="e.g. O+, A-"
+                    className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[#D1D5DB] text-xs mb-1 block">Gender</label>
+                  <select
+                    value={editForm.gender}
+                    onChange={(e) => setEditForm({ ...editForm, gender: e.target.value })}
+                    className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#4F83FF] text-sm"
+                  >
+                    <option value="male" className="bg-[#131e3a]">Male</option>
+                    <option value="female" className="bg-[#131e3a]">Female</option>
+                    <option value="other" className="bg-[#131e3a]">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[#D1D5DB] text-xs mb-1 block">Date of Birth</label>
+                  <input
+                    type="date"
+                    value={editForm.date_of_birth}
+                    onChange={(e) => setEditForm({ ...editForm, date_of_birth: e.target.value })}
+                    className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#4F83FF] text-sm"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-[#D1D5DB] text-xs mb-1 block">Phone Number</label>
+                <input
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                  placeholder="e.g. +91-9000000001"
+                  className="w-full bg-[#051650]/30 border border-[#2D2755] rounded-lg px-3 py-2 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#4F83FF]"
+                />
+              </div>
+              <div className="flex gap-3 pt-4 border-t border-[#2D2755]">
+                <button
+                  type="submit"
+                  disabled={updatePatient.isPending}
+                  className="flex-1 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-semibold transition-all shadow-lg shadow-violet-500/20 disabled:opacity-50"
+                >
+                  {updatePatient.isPending ? "Saving..." : "Save Changes"}
+                </button>
+                <button type="button" onClick={() => setEditModal(null)} className="px-6 py-2.5 bg-[#051650]/30 text-[#D1D5DB] rounded-xl hover:bg-[#051650]/50 border border-[#2D2755] transition-all">
                   Cancel
                 </button>
               </div>

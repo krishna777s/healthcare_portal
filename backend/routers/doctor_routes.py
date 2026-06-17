@@ -612,3 +612,64 @@ def generate_prescription_ai_summary(prescription_id: str, token: str, db: Sessi
     prescription.ai_summary = summary
     db.commit()
     return {"ai_summary": summary}
+
+
+@router.put("/patients/{patient_id}", response_model=schemas.PatientResponse)
+def doctor_update_patient(patient_id: str, data: schemas.PatientUpdate, token: str, db: Session = Depends(get_db)):
+    doctor = get_doctor_profile(token, db)
+    
+    patient = db.query(models.Patient).filter(
+        models.Patient.id == patient_id,
+        models.Patient.assigned_doctor_id == doctor.id
+    ).first()
+    if not patient:
+        raise HTTPException(status_code=403, detail="Not authorized to update this patient or patient not found")
+        
+    if data.full_name is not None and patient.user:
+        patient.user.full_name = data.full_name
+        
+    if data.date_of_birth is not None:
+        patient.date_of_birth = data.date_of_birth
+    if data.gender is not None:
+        patient.gender = data.gender
+    if data.blood_group is not None:
+        patient.blood_group = data.blood_group
+    if data.phone is not None:
+        patient.phone = data.phone
+    if data.current_condition is not None:
+        patient.current_condition = data.current_condition
+    if data.status is not None:
+        patient.status = data.status
+        
+    db.commit()
+    db.refresh(patient)
+    
+    assigned_doc_name = doctor.user.full_name if doctor.user else None
+    
+    # Check ward / bed details if inpatient
+    ward = None
+    bed_number = None
+    if patient.patient_type == "inpatient" and patient.admission:
+        ward = patient.admission.ward
+        bed_number = patient.admission.bed_number
+    elif patient.patient_type == "icu" and patient.icu_record:
+        ward = "ICU"
+        bed_number = patient.icu_record.bed_number
+        
+    return schemas.PatientResponse(
+        id=patient.id,
+        full_name=patient.user.full_name if patient.user else None,
+        email=patient.user.email if patient.user else None,
+        date_of_birth=patient.date_of_birth,
+        gender=patient.gender,
+        blood_group=patient.blood_group,
+        phone=patient.phone,
+        patient_type=patient.patient_type,
+        current_condition=patient.current_condition,
+        status=patient.status,
+        assigned_doctor_name=assigned_doc_name,
+        last_visit=None,
+        next_appointment=None,
+        ward=ward,
+        bed_number=bed_number
+    )

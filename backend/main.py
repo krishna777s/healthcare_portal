@@ -210,17 +210,18 @@ def clean_db(db: Session = Depends(database.get_db)):
         pharmacy_user.role = "pharmacy"
         staff = db.query(models.Staff).filter(models.Staff.email == pharmacy_user.email).first()
         if not staff:
-            db.add(models.Staff(full_name=pharmacy_user.full_name, email=pharmacy_user.email, role="pharmacist", shift="morning"))
+            db.add(models.Staff(full_name=pharmacy_user.full_name, email=pharmacy_user.email, role="pharmacist", shift="morning", phone="+91-9000000099"))
         else:
             staff.role = "pharmacist"
             staff.full_name = pharmacy_user.full_name
+            staff.phone = "+91-9000000099"
         db.commit()
     else:
         new_user = models.User(email="pharmacy@hospital.com", hashed_password=auth.get_password_hash("pharmacy123"), full_name="Pharmacy", role="pharmacy")
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        db.add(models.Staff(full_name=new_user.full_name, email=new_user.email, role="pharmacist", shift="morning"))
+        db.add(models.Staff(full_name=new_user.full_name, email=new_user.email, role="pharmacist", shift="morning", phone="+91-9000000099"))
         db.commit()
     return {"status": "cleaned"}
 

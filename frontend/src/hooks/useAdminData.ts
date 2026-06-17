@@ -121,6 +121,17 @@ export const useCreateDepartment = () => {
   });
 };
 
+export const useUpdateDepartment = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) =>
+      (await api.put(`/admin/departments/${id}`, data)).data,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-departments"] });
+    },
+  });
+};
+
 export const useCreateStaff = () => {
   const qc = useQueryClient();
   return useMutation({

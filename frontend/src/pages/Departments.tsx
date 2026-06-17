@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Users, Plus, X } from "lucide-react";
-import { useDepartments, useCreateDepartment } from "@/hooks/useAdminData";
+import { Building2, Users, Plus, X, Pencil } from "lucide-react";
+import { useDepartments, useCreateDepartment, useUpdateDepartment } from "@/hooks/useAdminData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Departments() {
   const { data: departments = [], isLoading } = useDepartments();
   const createDepartment = useCreateDepartment();
+  const updateDepartment = useUpdateDepartment();
   const { toast } = useToast();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingDept, setEditingDept] = useState<any>(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -21,21 +23,36 @@ export default function Departments() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createDepartment.mutateAsync(formData);
-      toast({
-        title: "Success",
-        description: "Department Created Successfully!",
-      });
+      if (editingDept) {
+        await updateDepartment.mutateAsync({ id: editingDept.id, data: formData });
+        toast({
+          title: "Success",
+          description: "Department Updated Successfully!",
+        });
+      } else {
+        await createDepartment.mutateAsync(formData);
+        toast({
+          title: "Success",
+          description: "Department Created Successfully!",
+        });
+      }
       setModalOpen(false);
+      setEditingDept(null);
       setFormData({ name: "", description: "", head_doctor: "", total_beds: 0 });
     } catch (err: any) {
       console.error(err);
       toast({
         title: "Error",
-        description: err.response?.data?.detail || "Failed to create department",
+        description: err.response?.data?.detail || `Failed to ${editingDept ? "update" : "create"} department`,
         variant: "destructive",
       });
     }
+  };
+
+  const handleOpenAddModal = () => {
+    setEditingDept(null);
+    setFormData({ name: "", description: "", head_doctor: "", total_beds: 0 });
+    setModalOpen(true);
   };
 
   return (
@@ -49,7 +66,7 @@ export default function Departments() {
         </div>
         <div>
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={handleOpenAddModal}
             className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-500/20"
           >
             <Plus className="h-5 w-5" /> Add Department
@@ -74,9 +91,27 @@ export default function Departments() {
           {departments.map((dept: any) => (
             <Card key={dept.id} className="border-[#2D2755] bg-[#051650]/10 backdrop-blur-sm hover:bg-[#051650]/20 transition-colors">
               <CardHeader className="pb-3">
-                <CardTitle className="text-white flex items-center gap-2 text-lg">
-                  <Building2 className="h-5 w-5 text-[#4F83FF]" />
-                  {dept.name}
+                <CardTitle className="text-white flex items-center justify-between text-lg">
+                  <div className="flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-[#4F83FF]" />
+                    {dept.name}
+                  </div>
+                  <button
+                    onClick={() => {
+                      setEditingDept(dept);
+                      setFormData({
+                        name: dept.name,
+                        description: dept.description || "",
+                        head_doctor: dept.head_doctor || "",
+                        total_beds: dept.total_beds || 0,
+                      });
+                      setModalOpen(true);
+                    }}
+                    className="text-gray-400 hover:text-white p-1.5 hover:bg-[#051650]/40 rounded-lg transition-colors border border-[#2D2755] bg-[#051650]/10"
+                    title="Edit Department"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -101,13 +136,21 @@ export default function Departments() {
         </div>
       )}
 
-      {/* Add Department Modal */}
+      {/* Department Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-[#131e3a] border border-[#2D2755] rounded-2xl w-full max-w-md shadow-2xl animate-slide-in">
             <div className="flex items-center justify-between p-6 border-b border-[#2D2755]">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Plus className="h-5 w-5 text-blue-400" /> Add Department
+                {editingDept ? (
+                  <>
+                    <Pencil className="h-5 w-5 text-blue-400" /> Edit Department
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-5 w-5 text-blue-400" /> Add Department
+                  </>
+                )}
               </h2>
               <button
                 onClick={() => setModalOpen(false)}
@@ -165,10 +208,10 @@ export default function Departments() {
                 </button>
                 <button
                   type="submit"
-                  disabled={createDepartment.isPending}
+                  disabled={createDepartment.isPending || updateDepartment.isPending}
                   className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors font-semibold shadow-md disabled:opacity-50"
                 >
-                  {createDepartment.isPending ? "Saving..." : "Save Department"}
+                  {createDepartment.isPending || updateDepartment.isPending ? "Saving..." : editingDept ? "Save Changes" : "Save Department"}
                 </button>
               </div>
             </form>
