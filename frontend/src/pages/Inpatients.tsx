@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-<<<<<<< HEAD
 import { BedDouble, User, Clock, Plus, X, FileText, Activity, Edit } from "lucide-react";
 import { useInpatients, useCreatePrescription, useCreateMedicalRecord, useCreateLabReport, useUploadLabReportFile, useDoctorUpdatePatient } from "@/hooks/useDoctorData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-=======
-import { BedDouble, User, Clock, Plus, X, FileText, Activity } from "lucide-react";
-import { useInpatients, useCreatePrescription, useCreateMedicalRecord, useCreateLabReport, useUploadLabReportFile } from "@/hooks/useDoctorData";
-import { Skeleton } from "@/components/ui/skeleton";
->>>>>>> origin/main
 
 export default function Inpatients() {
   const { data: admissions = [], isLoading } = useInpatients();
