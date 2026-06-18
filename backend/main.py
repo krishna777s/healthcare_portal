@@ -165,14 +165,21 @@ os.makedirs("uploads/medical_records", exist_ok=True)
 app = FastAPI(title="Hospital Management API", version="2.0.0")
 
 # CORS setup
+origins = [
+    "http://localhost:8080",
+    "http://localhost:5173",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:5173",
+    "https://healthcare-cerevyn.azurewebsites.net",
+]
+
+env_origins = os.getenv("CORS_ORIGINS")
+if env_origins:
+    origins.extend([o.strip() for o in env_origins.split(",") if o.strip()])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:8080",
-        "http://localhost:5173",
-        "http://127.0.0.1:8080",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
