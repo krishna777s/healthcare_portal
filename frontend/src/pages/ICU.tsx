@@ -58,7 +58,6 @@ export default function ICU() {
       });
     }
   };
-
   const unreadCount = alerts.filter((a: any) => !a.is_acknowledged).length;
 
   return (
@@ -228,7 +227,6 @@ export default function ICU() {
           )}
         </CardContent>
       </Card>
-
       {/* Edit Patient Modal */}
       {editModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
